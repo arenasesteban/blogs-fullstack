@@ -58,6 +58,20 @@ const App = () => {
         fetchBlogs();
     }, []);
 
+    useEffect(() => {
+        const loadUserFromLocalStorage = () => {
+            const loggedBlogappUser = localStorage.getItem('loggedBlogappUser');
+
+            if(loggedBlogappUser) {
+                const user = JSON.parse(loggedBlogappUser);
+                setUser(user);
+                blogService.setToken(user.token);
+            }
+        }
+
+        loadUserFromLocalStorage();
+    }, []);
+
     if(user === null) {
         return (
             <div>
