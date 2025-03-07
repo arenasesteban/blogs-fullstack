@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs';
 import loginService from './services/login';
+import Notification from './components/Notification';
 
 const App = () => {
     const [blogs, setBlogs] = useState([]);
@@ -11,6 +12,7 @@ const App = () => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [url, setUrl] = useState('');
+    const [message, setMessage] = useState('');
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -25,7 +27,8 @@ const App = () => {
             setUsername('');
             setPassword('');
         } catch(error) { 
-            console.log(error);
+            setMessage({ type: 'error', content: error.response.data.error });
+            setTimeout(() => setMessage({ type: null, content: null}), 5000);
         }
     }
 
@@ -44,8 +47,12 @@ const App = () => {
             setTitle('');
             setAuthor('');
             setUrl('');
+
+            setMessage({ type: 'success', content: `A new blog ${blog.title} by ${blog.author} added` });
+            setTimeout(() => setMessage({ type: null, content: null}), 5000);
         } catch(error) {
-            console.log(error);
+            setMessage({ type: 'error', content: error.response.data.error });
+            setTimeout(() => setMessage({ type: null, content: null}), 5000);
         }
     }
 
@@ -76,6 +83,7 @@ const App = () => {
         return (
             <div>
                 <h2>Log in to application</h2>
+                <Notification type={message.type} content={message.content} />
                 <form onSubmit={handleLogin}>
                     <div>
                         Username:
@@ -94,6 +102,7 @@ const App = () => {
     return (
         <div>
             <h2>Blogs</h2>
+            <Notification type={message.type} content={message.content} />
             <p>
                 {user.name} logged in
                 <button onClick={handleLogout}>Logout</button>
