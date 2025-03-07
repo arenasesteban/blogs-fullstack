@@ -1,0 +1,41 @@
+{
+  "name": "blogs",
+  "version": "1.0.0",
+  "description": "FullStackOpen | Exercises - Part 4",
+  "homepage": "https://github.com/arenasesteban/blogs#readme",
+  "bugs": {
+    "url": "https://github.com/arenasesteban/blogs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arenasesteban/blogs.git"
+  },
+  "license": "ISC",
+  "author": "Esteban Arenas",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "lint": "eslint .",
+    "test": "cross-env NODE_ENV=test node --test"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "mongoose": "^8.10.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "eslint": "^9.20.1",
+    "globals": "^16.0.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0"
+  }
+}
