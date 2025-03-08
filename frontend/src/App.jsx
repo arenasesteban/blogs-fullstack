@@ -12,9 +12,6 @@ const App = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
-    const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
-    const [url, setUrl] = useState('');
     const [message, setMessage] = useState('');
 
     const handleLogin = async (e) => {
@@ -30,6 +27,7 @@ const App = () => {
             setUsername('');
             setPassword('');
         } catch(error) { 
+            console.log(error);
             setMessage({ type: 'error', content: error.response.data.error });
             setTimeout(() => setMessage({ type: null, content: null}), 5000);
         }
@@ -40,16 +38,11 @@ const App = () => {
         setUser(null);
     }
 
-    const handleCreateBlog = async (e) => {
-        e.preventDefault();
-
+    const handleCreateBlog = async (blogObject) => {
         try {
-            const blog = await blogService.create({ title, author, url });
+            const blog = await blogService.create(blogObject);
 
             setBlogs([...blogs, blog]);
-            setTitle('');
-            setAuthor('');
-            setUrl('');
 
             setMessage({ type: 'success', content: `A new blog ${blog.title} by ${blog.author} added` });
             setTimeout(() => setMessage({ type: null, content: null}), 5000);
@@ -104,15 +97,7 @@ const App = () => {
                 <button onClick={handleLogout}>Logout</button>
             </p>
             <Togglable buttonLabel='New Blog'>
-                <BlogForm 
-                    title={title}
-                    author={author}
-                    url={url}
-                    handleTitleChange={(e) => setTitle(e.target.value)}
-                    handleAuthorChange={(e) => setAuthor(e.target.value)}
-                    handleUrlChange={(e) => setUrl (e.target.value)}
-                    handleSubmit={handleCreateBlog}
-                />
+                <BlogForm handleCreateBlog={handleCreateBlog} />
             </Togglable>
             <div>
                 {blogs.map(blog =>
