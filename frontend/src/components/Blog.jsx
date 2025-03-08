@@ -1,10 +1,20 @@
 import { useState } from 'react';
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike }) => {
     const [showDetails, setShowDetails] = useState(false);
 
     const toggleDetails = () => {
         setShowDetails(!showDetails);
+    }
+
+    const handleClick = () => {
+        handleLike(blog.id, {
+            user: blog.user.id,
+            title: blog.title,
+            author: blog.author,
+            url: blog.url,
+            likes: blog.likes + 1
+        });
     }
 
     return (
@@ -18,7 +28,7 @@ const Blog = ({ blog }) => {
                     <div>{blog.url}</div>
                     <div>
                         Likes: {blog.likes}
-                        <button>Like</button>
+                        <button onClick={handleClick}>Like</button>
                     </div>
                     <div>{blog.user.name}</div>
                 </div>

@@ -37,7 +37,7 @@ blogsRouter.post('/',  middleware.userExtractor, async (req, res, next) => {
     }
 });
 
-blogsRouter.delete('/:id',  middleware.userExtractor, async (req, res, next) => {
+blogsRouter.delete('/:id', middleware.userExtractor, async (req, res, next) => {
     try {
         const blog = await Blog.findById(req.params.id);
  
@@ -53,10 +53,14 @@ blogsRouter.delete('/:id',  middleware.userExtractor, async (req, res, next) => 
     }
 });
 
-blogsRouter.put('/:id', async (req, res) => {
-    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true, context: 'query' });
+blogsRouter.put('/:id', middleware.userExtractor, async (req, res, next) => {
+    try {
+        const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true, context: 'query' }).populate('user', { username: 1, name: 1});
 
-    res.status(200).json(updatedBlog);
+        res.status(200).json(updatedBlog);
+    } catch(error) {
+        next(error);
+    }
 });
 
 module.exports = blogsRouter;
