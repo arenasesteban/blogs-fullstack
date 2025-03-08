@@ -58,7 +58,7 @@ const App = () => {
 
             console.log(updatedBlog);
 
-            setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog));
+            setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog).sort((blogA, blogB) => blogB.likes - blogA.likes));
         } catch(error) {
             setMessage({ type: 'error', content: error.response.data.error });
             setTimeout(() => setMessage({ type: null, content: null}), 5000);
@@ -68,7 +68,8 @@ const App = () => {
     useEffect(() => {
         const fetchBlogs = async () => {
             const blogs = await blogService.getAll();
-            setBlogs(blogs);
+
+            setBlogs(blogs.sort((blogA, blogB) => blogB.likes - blogA.likes));
         }
 
         fetchBlogs();
